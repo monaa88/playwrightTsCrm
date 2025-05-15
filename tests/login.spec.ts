@@ -15,6 +15,7 @@ test("login page", async () => {
   await password.fill("Test@12345");
 
   const submit: Locator = await page.locator('//input[@type="submit"]');
+  await submit.isVisible();
   await submit.click();
 
   const title = await page.title();
