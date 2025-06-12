@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("api", async ({ request }) => {
   const response = await request.get(
@@ -26,6 +26,16 @@ test("api with query params", async ({ request }) => {
     }
   );
 
-  const data = await response.json();
-  console.log(data);
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  //Validate the JSON api response
+  expect(responseBody.booking.firstname).toBe("jjkk");
+  expect(responseBody.booking).toHaveProperty("lastname", "Brown");
+
+  //Validate nested JSON objects
+  expect(responseBody.booking.bookingdates).toEqual({
+    checkin: "2018-01-01",
+    checkout: "2019-01-01",
+  });
+  console.log(responseBody);
 });
